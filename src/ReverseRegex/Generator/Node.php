@@ -6,6 +6,7 @@ namespace ReverseRegex\Generator;
 
 use ArrayAccess;
 use ArrayObject;
+use Closure;
 use Countable;
 use Iterator;
 use SplObjectStorage;
@@ -22,24 +23,24 @@ class Node implements ArrayAccess, Countable, Iterator
     /**
      *  @var string name of the node
      */
-    protected $label;
+    protected string $label;
 
     /**
      *  @var ArrayObject container for node metadata
      */
-    protected $attrs;
+    protected ArrayObject $attrs;
 
     /**
      *  @var SplObjectStorage container for node relationships
      */
-    protected $links;
+    protected SplObjectStorage $links;
 
     /**
      *  Class Constructor.
      *
      *  @param string $label
      */
-    public function __construct($label = 'node')
+    public function __construct(string $label = 'node')
     {
         $this->attrs = new ArrayObject();
         $this->links = new SplObjectStorage();
@@ -52,7 +53,7 @@ class Node implements ArrayAccess, Countable, Iterator
      *
      *  @return string the nodes label
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
@@ -62,7 +63,7 @@ class Node implements ArrayAccess, Countable, Iterator
      *
      *  @param string $label the nodes label
      */
-    public function setLabel($label)
+    public function setLabel(string $label)
     {
         if (!(is_scalar($label) || null === $label)) {
             return false;
@@ -124,9 +125,9 @@ class Node implements ArrayAccess, Countable, Iterator
     /**
      *  Apply a closure to all relations.
      *
-     *  @param Closer the function to apply
+     * @param Closure $function
      */
-    public function map(Closure $function)
+    public function map(Closure $function): void
     {
         foreach ($this->links as $node) {
             $function($node);
@@ -136,7 +137,7 @@ class Node implements ArrayAccess, Countable, Iterator
     //------------------------------------------------------------------
     // Countable
 
-    public function count()
+    public function count(): int
     {
         return count($this->links);
     }
@@ -144,27 +145,27 @@ class Node implements ArrayAccess, Countable, Iterator
     //------------------------------------------------------------------
     // Iterator
 
-    public function current()
+    public function current(): object
     {
         return $this->links->current();
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->links->key();
     }
 
-    public function next()
+    public function next(): void
     {
-        return $this->links->next();
+        $this->links->next();
     }
 
-    public function rewind()
+    public function rewind(): void
     {
-        return $this->links->rewind();
+        $this->links->rewind();
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return $this->links->valid();
     }
@@ -172,24 +173,24 @@ class Node implements ArrayAccess, Countable, Iterator
     //------------------------------------------------------------------
     // ArrayAccess Implementation
 
-    public function offsetGet($key)
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->attrs->offsetGet($key);
+        return $this->attrs->offsetGet($offset);
     }
 
-    public function offsetSet($key, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->attrs->offsetSet($key, $value);
+        $this->attrs->offsetSet($offset, $value);
     }
 
-    public function offsetExists($key)
+    public function offsetExists(mixed $offset): bool
     {
-        return $this->attrs->offsetExists($key);
+        return $this->attrs->offsetExists($offset);
     }
 
-    public function offsetUnset($key)
+    public function offsetUnset(mixed $offset): void
     {
-        return $this->attrs->offsetUnset($key);
+        $this->attrs->offsetUnset($offset);
     }
 }
 

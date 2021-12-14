@@ -1,5 +1,5 @@
 {
-    "name": "pointybeard/reverse-regex",
+    "name": "evosoftcz/reverse-regex",
     "description": "Convert Regular Expressions into text, for testing",
     "keywords": [
         "regex",
@@ -28,7 +28,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.1",
         "doctrine/lexer": "^1.2",
         "doctrine/collections": "^1.6",
         "symfony/polyfill-mbstring": "^1.23"
